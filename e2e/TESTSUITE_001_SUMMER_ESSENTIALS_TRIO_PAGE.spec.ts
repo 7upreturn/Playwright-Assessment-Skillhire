@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { locators , textToAssert } from '../Locators';
-
+import dotenv from 'dotenv'
 
 test.describe('Check Summer Essentials Trio Test Suite', () => {
     test.beforeEach(async ({ page }) => {
-        await page.route(locators.routeToShopBaseURL, (route, request) => {    // we are routing the requests from this baseURL which can be found in generalLocators.ts file
+        await page.route(process.env.STAGING_BASE_URL!, (route, request) => {    // we are routing the requests from this baseURL which can be found in generalLocators.ts file
             route.continue({
                 headers: {                                                      
                     ...request.headers(),
-                    'x-vercel-protection-bypass': 'fWNDL2nFEr8wpx0d16gSZQMmkSQGyC4l' // we add the headers so we don't have to authenticate
+                    'x-vercel-protection-bypass' : process.env.VERCEL_PROTECTION_HEADER_VALUE! // we add the headers so we don't have to authenticate
                 }
             });
         });
@@ -16,7 +16,7 @@ test.describe('Check Summer Essentials Trio Test Suite', () => {
 
     test('End to End test for Adding a product to cart', async ({ page }) => {   // This is our end to end test on the product page 
         await test.step('Go to staging product page', async () => {
-            await page.goto(locators.productPageURL)
+            await page.goto(process.env.STAGING_URL_SUMMER_ESSENTIALS_TRIO!)
         })
 
 
